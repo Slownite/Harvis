@@ -39,7 +39,11 @@ class Camera:
         return (mtx, dist, rvecs, tvecs)
 
     def imgWorldToCam(self, img):
-       pass
+        newcameramtx, roi = cv.getOptimalNewCameraMatrix(self.mtx, 1/self.dist, (self.w, self.h), 1, (self.w, self.h))
+        dst =  cv2.undistort(img, self.mtx, 1/self.dist, newcameramtx)
+        x, y, w, h = roi
+        dst = dst[y:y+h, x:x+w]
+        cv.imwrite('calibresult.png', dst)
     def imgCamToWorld(self, img):
          newcameramtx, roi = cv.getOptimalNewCameraMatrix(self.mtx, self.dist, (self.w, self.h), 1, (self.w, self.h))
         dst =  cv2.undistort(img, self.mtx, self.dist, newcameramtx)
@@ -47,6 +51,7 @@ class Camera:
         dst = dst[y:y+h, x:x+w]
         cv.imwrite('calibresult.png', dst)
     def save(self, path):
+        #dictonnary
         pass
     def load(path):
         pass

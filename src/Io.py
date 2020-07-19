@@ -6,7 +6,7 @@ class Io:
 	def __init__(self):
 		pass
 
-	def get_images(self, path : str) -> list:
+	def get_images(path : str) -> list:
 		d = glob.glob(path)
 		if len(d) == 0:
 			raise Exception("path does not exist.")

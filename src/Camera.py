@@ -21,7 +21,7 @@ class Camera:
         self.ThreeDpoint = np.zeros((1, checkboard[0] * checkboard[1], 3), np.float32)
         self.ThreeDpoint[0,:, :2] = np.mgrid[0:checkboard[0], 0:checkboard[1]].T.reshape(-1, 2)
 
-        images = Io.get_images("images/*.jpg")
+        images = Io.get_images(path+"*")
         for img in images:
             image = cv2.imread(img)
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -38,18 +38,23 @@ class Camera:
         ret, self.mtx, self.dist, self.rvecs, self.tvecs = cv2.calibrateCamera(self.ThreeDPoints, self.TwoDPoints, gray.shape[::-1],None,None)
         return (self.mtx, self.dist, self.rvecs, self.tvecs)
 
-    def imgWorldToCam(self, img):
-       pass
-    
     def imgCamToWorld(self, img):
         newcameramtx, roi = cv2.getOptimalNewCameraMatrix(self.mtx, self.dist, (self.w, self.h), 1, (self.w, self.h))
         dst =  cv2.undistort(img, self.mtx, self.dist, newcameramtx)
         cv2.imwrite('calibresult.png', dst)
-    def save(self, path):
-        #dictonnary
-        pass
-    def load(path):
-        pass
+    def save(self):
+        data = (self.mtx, self.tvecs, self.rvecs,  self.dist, self.h, self.w)
+        print(data)
+        Io.write_data_to_file(data)
+    def load():
+      datas = Io.get_data_from_file()
+      self.mtx = datas[0]
+      self.tvecs = datas[1]
+      self.rvecs = datas[2]
+      self.dist = datas[3]
+      self.h = datas[4]
+      self.w = datas[5]
+
 if "__main__" == __name__:
     checkboard = (6, 9)
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,  30, 0.001)

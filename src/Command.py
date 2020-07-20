@@ -3,26 +3,20 @@ from src.Camera import Camera
 import cv2
 class Command:
     def __init__(self):
-        self.verbose = false
+        self.verbose = False
     def parse(self):
         args = sys.argv
-        args.pop()
-        for i in args:
-            if arg[i] == "-h":
+        for i in range(len(args)):
+            if args[i] == "-h":
                 help()
-            else if args[i] == "-t":
-                if not args[i + 1]:
-                    raise Exception("need path after -t type -h for more information")
-                if not args[i + 2]:
-                    raise Exception("need the checkboard size (x, y) after the path")
-                if not args[i + 3]:
-                    raise Exception("need the window size size (x, y) after the checkboard dimension")
+            elif args[i] == "-t":
                 camera = Camera()
-                checkboard = tuple(map(int, args[i+2].split(', ')))
-                winSize = tuple(map(int, args[i+3].split(', ')))
+                checkboard = (6,9)
+                winSize = (5,5)
+                print(args)
                 camera.Calibration(args[i+1], checkboard, winSize)
                 camera.save()
-            else if args[i] == "i"
+            elif args[i] == "i":
                 if not args[i + 1]:
                     raise Exception("need path after -i type -h for more information")
                 camera = Camera()
@@ -32,5 +26,10 @@ class Command:
     
     def help():
         print("""
-            
+            calibration_tool usage
+            calibration:
+            -t path checkboard dimension window size dimension
+            save result in result.txt
+            apply calibration on image:
+            -i path to image
         """)

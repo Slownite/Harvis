@@ -8,7 +8,7 @@ class Command:
         args = sys.argv
         for i in range(len(args)):
             if args[i] == "-h":
-                help()
+                self.help()
             elif args[i] == "-t":
                 camera = Camera()
                 checkboard = (6,9)
@@ -16,7 +16,7 @@ class Command:
                 print(args)
                 camera.Calibration(args[i+1], checkboard, winSize)
                 camera.save()
-            elif args[i] == "i":
+            elif args[i] == "-i":
                 if not args[i + 1]:
                     raise Exception("need path after -i type -h for more information")
                 camera = Camera()
@@ -24,7 +24,7 @@ class Command:
                 img = cv2.imread(args[i + 1])
                 camera.imgCamToWorld(img)
     
-    def help():
+    def help(self):
         print("""
             calibration_tool usage
             calibration:

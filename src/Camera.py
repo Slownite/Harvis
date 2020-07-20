@@ -44,9 +44,9 @@ class Camera:
         cv2.imwrite('calibresult.png', dst)
     def save(self):
         data = (self.mtx, self.tvecs, self.rvecs,  self.dist, self.h, self.w)
-        print(data)
+      #  print(data)
         Io.write_data_to_file(data)
-    def load():
+    def load(self):
       datas = Io.get_data_from_file()
       self.mtx = datas[0]
       self.tvecs = datas[1]
@@ -54,6 +54,7 @@ class Camera:
       self.dist = datas[3]
       self.h = datas[4]
       self.w = datas[5]
+   #   print(self.w)
 
 if "__main__" == __name__:
     checkboard = (6, 9)

@@ -21,7 +21,7 @@ class Io:
 
     @staticmethod
     def get_data_from_file(path : str = "results.npy") -> list:
-        a = np.load(path)
+        a = np.load(path, allow_pickle=True)
         return a
 
 

@@ -1,25 +1,30 @@
 import glob
 import pathlib
 import json
+import numpy as np
 
 class Io:
-
 	def __init__(self):
 		pass
 
-	def get_images(self, path : str) -> list:
+	@staticmethod
+	def get_images(path : str) -> list:
 		d = glob.glob(path)
 		if len(d) == 0:
 			raise Exception("Path does not exist.")
 		return d
 
-	def write_data_to_file(self, data : tuple, path : str ="results.txt"):
+	@staticmethod
+	def write_data_to_file(data : tuple, path : str ="results.txt"):
 		result_file = open(path, 'w')
 		for var in data:
+			if type(var) is np.ndarray:
+				var = var.tolist()
 			result_file.write(json.dumps(var) + '\n')
 		result_file.close()
 
-	def get_data_from_file(self, path : str = "results.txt") -> list:
+	@staticmethod
+	def get_data_from_file(path : str = "results.txt") -> list:
 		a = []
 		result_file = open(path, 'r')
 		for line in result_file:
@@ -27,8 +32,12 @@ class Io:
 		result_file.close()
 		return a
 
-#b = Io()
-#i = b.get_images("./*.py")
-#b.write_data_to_file(( [{"x": 0, "y": 0, "z": 0}, {'z': -1}],  ["o", 9],  [[1, 2, 3], [0, 5]] ))
-#a = b.get_data_from_file()
-#print(a)
+
+if __name__ == "__main__":
+	ar = np.array([1, 2, 3])
+	sec_arr = np.array([[1, 2, 3], [0, 5, 8]])
+	b = Io()
+	i = b.get_images("./*.py")
+	b.write_data_to_file((ar, sec_arr, [1, 2, 3], {'Ok': 1, 'oook': 9}))
+	a = b.get_data_from_file()
+	print(a)
